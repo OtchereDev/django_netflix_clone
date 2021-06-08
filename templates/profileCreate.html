@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix - Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
+        <div class="w-6/12">
+            <img src="assets/netflix.png" alt="logo" class="w-5/12 md:w-2/12">
+        </div>
+
+        
+    </nav>
+    <section class='bg-primary_black min-h-screen py-20 md:py-32 flex-col flex items-center'>
+        <div class="flex flex-wrap justify-center  w-10/12  md:w-6/12">
+            <form class="w-full md:w-8/12 bg-gray-900 p-5 rounded-lg">
+                <h1 class="text-4xl text-center text-gray-100 font-medium">
+                    Create A Profile
+                </h1>
+                <div class="my-4"> 
+                    <Label class='text-lg text-gray-200 font-medium mb-3'>
+                        Profile Name
+                    </Label>
+                    <input required class="p-2 bg-gray-500 rounded-sm text-gray-200 outline-none block w-full" type="text" name="profile_name" id="id_email" placeholder="Profile name">
+                </div>
+                <div class="my-4"> 
+                    <Label class='text-lg text-gray-200 font-medium mb-3'>
+                        Maturity Level
+                    </Label>
+                    <select class="p-2 bg-gray-500 rounded-sm text-gray-200 outline-none block w-full"  name="profile_name" id="id_email" >
+                        <option value="All">All</option>
+                        <option value="Kids">Kids</option>
+                       
+                    </select>
+                </div>
+                <div class="flex justify-center items-center">
+                    <button class="px-4 py-2 rounded-md outline-none bg-primary_red text-gray-100">Create Profile</button>
+                </div>
+            </form> 
+        </div>
+        
+    </section>
+</body>
+</html>
