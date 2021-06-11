@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix - Detail Page</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
-</head>
-<body class='font-primary'>
-    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
-        <div class="w-6/12">
-            <img src="assets/netflix.png" alt="logo" class="w-5/12 md:w-2/12">
-        </div>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Detail Page
+{% endblock title %}
 
-        <div>
-            <button class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
-                Log out
-            </button>
-        </div>
-        
-    </nav>
+{% block others %}
+
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+{% endblock others %}
+
+{% block content %}
+
+    {% include 'partials/navbar.html' %}
     <main class='bg-primary_black min-h-screen w-full'>
-        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex justify-end items-end bg-cover" style="background-image: url('assets/movie.webp');">
+        <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex  items-end bg-cover" style="background-image: url('{{movie.flyer.url}}');">
             <div>
                 <h2 class="text-6xl font-semibold text-white my-4">
-                    Vikings
+                    {{movie.title}}
                 </h2>
                 <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus repellendus odit perspiciatis nostrum culpa exercitationem quis. Ab obcaecati odio minus. Dolorum sapiente eaque, repellendus ea fugiat amet fuga libero at!
+                    {{movie.description |slice:":50"}}...
+                    {% lorem 1 %}
                 </p>
                 <div class="flex my-4">
-
-                    <button class="flex items-center bg-white py-2 px-5 rounded-md">
-                        <ion-icon name="play" class="text-2xl"></ion-icon>
-                        <span class="ml-3 font-medium">
-                            Play
-                        </span>
-                    </button>
+                    <a href="{% url 'core:play' movie_id=movie.uuid %}">
+                    
+                        <button class="flex items-center bg-white py-2 px-5 rounded-md" style='color:black;'>
+                            <ion-icon name="play" class="text-2xl"></ion-icon>
+                            <span class="ml-3 font-medium">
+                                Play
+                            </span>
+                        </button>
+                    </a>
     
                     
                 </div>
@@ -45,36 +39,37 @@
         </section> 
         <section class='bg-primary_black  min-h-screen flex justify-center py-10'>
             <div class="p-8 w-10/12 relative" >
+                {% if movie.type == 'seasonal' %}
+                <div style='margin-top:2rem;margin-bottom:2rem;'>
+                
+                    <h2 class="text-gray-200 text-3xl font-medium">
+                        Episode
+                    </h2>
+                    {% for episode in movie.videos.all %}
+                        <h3 class='text-lg'>
+                            <a href="{% url 'core:play' movie_id=movie.uuid %}?epi={{forloop.counter0}}">
+                            
+                            {{forloop.counter}} - {{episode.title}}
+                            </a>
+                        </h3>
+                    {% endfor %}
+                
+                </div>
+                {% endif %}
+
                 <h2 class="text-gray-200 text-3xl font-medium">
                     Description
                 </h2>
                 <div class="flex justify-center  items-center min-w-full  movie_lis">
                     <p class="text-gray-100 text-lg">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut earum atque in, vero veniam sequi possimus optio ipsum laboriosam porro et explicabo soluta ea voluptatibus quam commodi, asperiores dignissimos! Quam!
-                        Tenetur ut dolores eveniet error, repellendus iusto in iure. Amet, dolor ea? Eos cupiditate voluptate maxime iusto quae, accusantium delectus cumque odio unde, alias accusamus molestiae ullam minus rerum repudiandae.
-                        Vitae sapiente error quam, corporis ex ab sed rem. Similique amet, vero ea blanditiis architecto error corrupti alias eius, inventore labore libero in nemo quos modi, sint voluptates voluptate ratione.
-                        Deleniti cupiditate quidem facilis nam eius natus deserunt ut quos ullam similique, iste dignissimos. Itaque, totam? Ad delectus numquam cumque! Dolorem quod voluptatibus dolor repellat porro ullam nemo voluptas quasi.
-                        Aspernatur laborum velit nemo enim natus quasi aperiam quis, non fuga voluptatum eius, omnis illo id corporis distinctio eligendi harum, magni veniam ipsam labore! A sed dolore dicta ea perferendis.
+                        
+                        {{movie.description}}    
                     </p>
                 </div>
             </div>
         </section>
         
     </main>
-    <script>
-        const nav = document.querySelector('nav')
+    
+{% endblock content %}
 
-        document.addEventListener("scroll",e=>{
-            
-            if(scrollY>200){
-                nav.classList.add('bg-gray-900')
-          
-            }else{
-                nav.classList.remove('bg-gray-900')
-                
-            }
-        })
-
-    </script>
-</body>
-</html>

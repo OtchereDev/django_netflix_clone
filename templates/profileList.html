@@ -1,53 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix - Profile</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
-        <div class="w-6/12">
-            <img src="assets/netflix.png" alt="logo" class="w-5/12 md:w-2/12">
-        </div>
+{% extends 'base.html' %}
+{% load static %}
 
-        
-    </nav>
+{% block title %}
+Netflix - Profile
+{% endblock title %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+
+
     <section class='bg-primary_black min-h-screen py-20 md:py-0 flex-col flex justify-center items-center'>
         <h2 class="text-center font-medium text-5xl my-4 text-gray-100">
             Who's watching ?
         </h2>
 
         <div class="flex flex-wrap justify-center items-center w-10/12  md:w-6/12">
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
 
-            </div>
+        {% for profile in profiles %}
+            <a href="{% url 'core:watch' profile_id=profile.uuid %}">
+            
+                <div class="w-32 h-32 m-4  bg-blue-500 flex justify-center items-center flex-col rounded-md cursor-pointer">
+                    <p class='text-6xl'>
+                        {{profile.name | slice:":1"}}
+                    </p>
+                    <p class='text-lg'>
+                        {{profile.name}}
+                    </p>
+                </div>
+            </a>
+        {% endfor %}
 
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
-
-            </div>
-
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
-
-            </div>
-
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
-
-            </div>
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
-
-            </div>
-            <div class="w-32 h-32 m-4  bg-blue-500 rounded-md cursor-pointer">
-
-            </div>
         </div>
-        <div class="flex justify-center items-center">
-            <button class="px-4 py-2 rounded-md outline-none bg-gray-400 text-gray-100">
-                Add A New Profile
-            </button>
-        </div>
+        {% if request.user.profiles.all|length < 5 %}
+      
+            <div class="flex justify-center items-center">
+                <a href="{% url 'core:profile_create' %}">
+                    
+                    <button class="px-4 py-2 rounded-md outline-none bg-gray-400 text-gray-100">
+                        Add A New Profile
+                    </button>
+                </a>
+            </div>
+        {% endif %}
     </section>
-</body>
-</html>
+{% endblock content %}

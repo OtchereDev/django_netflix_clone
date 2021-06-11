@@ -1,0 +1,67 @@
+{% extends '../base.html' %}
+    {% load static %}
+    {% block title %}
+    
+    Netflix - Login
+    {% endblock title %}
+    
+    {% block others %}
+    
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    {% endblock others %}
+{% block content %}
+
+   
+    {% include '../partials/navbar.html' with AUTH='false' %}
+    <header class="min-h-screen w-full bg-black bg-opacity-75 showcase border-gray-600 border-b-8 flex justify-center py-20 bg-no-repeat"  style="background-image: url('{% static 'background_netflix.jpg' %}');">
+        <div class="z-10 h-full py-32 md:py-0 text-gray-100 w-6/12  flex items-center flex-col">
+            <form method='POST' class="bg-black bg-opacity-70 py-8 px-4 w-8/12 rounded-md" >
+                <h1 class="text-4xl font-semibold text-center ">
+                    Log In
+                </h1>
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                
+                <div class=" text-center my-4 text-primary_red">
+                
+                
+                
+                <p class="text-primary_red ">
+                    
+                    {{form.non_field_errors}}
+                </p>
+               
+                   
+                </div>
+                {% endif %}
+                <div> 
+                    <Label class='text-lg font-medium mb-3'>
+                        Email
+                    </Label>
+                    <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="email" name="login" id="id_login" placeholder="Your Email">
+                </div>
+                <div class='my-3'> 
+                    <Label class='text-lg font-medium mb-3'>
+                        Password
+                    </Label>
+                    <input class="p-2 bg-gray-200 rounded-sm text-gray-900 outline-none block w-full" type="password" name="password" id="id_password" placeholder="Password">
+                </div>
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <div class="flex justify-center items-center">
+                    <button class="py-2 px-4 bg-primary_red text-gray-100 font-medium text-lg rounded-md">
+                        Log In
+                    </button>
+                </div>
+
+                <div class="text-center my-4">
+                    <p>
+                        Do not have account <a href="{% url 'account_signup' %}" class="text-blue-600"> Sign Up</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </header>
+{% endblock content %}
