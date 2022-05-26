@@ -1,23 +1,31 @@
 {% load static %}
-<nav class="flex justify-between items-center py-3 px-4 fixed w-full z-50">
-    <div class="w-6/12">
-        <img src="{% static 'netflix.png' %}" alt="logo" class="w-5/12 md:w-2/12">
-    </div>
+<nav class="flex text-gray-100 justify-between items-center py-3 px-4 fixed w-full z-50">
+        <div class="w-6/12">
+            <a href='/'>
+            
+            <img src="{% static 'netflix.png' %}" alt="logo" class="w-5/12 md:w-2/12">
+            </a>
+        </div>
 
-    <div>
-        {% if request.user.is_authenticated %}
-            <form action="{% url 'account_logout' %}" method="POST">
-            {% csrf_token %}
-            <button class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
-                Log Out
-            </button>
+        {% if AUTH != 'false'  %}
+            {% if request.user.is_authenticated %}
+            <div>
+            <form action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
+                    Logout
+                </button>
             </form>
-        {% else %}
-        <a href="{% url 'account_login' %}">
-            <button class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
-                Sign In 
-            </button>
-        </a>
+            </div>
+            {% else %}
+            <div>
+            <a href="{% url 'account_login' %}">
+
+                <button class='bg-primary_red py-1 px-3 text-white md:text-lg rounded-md'>
+                    Sign In 
+                </button>
+            </a>
+            </div>
+            {% endif %}
         {% endif %}
-    </div>
-</nav>
+    </nav>
