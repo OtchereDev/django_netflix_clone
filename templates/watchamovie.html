@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    watcha
+{% endblock title %}
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+{% comment %} 
+    <div style="padding-top:40px">
+        {{ selected_movie_df|safe }}
+    </div> {% endcomment %}
+    <div style="padding-top:40px">
+    </div>
+
+    <div class="flex flex-wrap justify-center items-center">
+        {% for movie in movie_list %}
+        <a href='{{movie.movie_url}}'>
+            <div class="w-32 h-32 m-4 flex flex-col justify-center align-center text-center bg-blue-500 rounded-md">
+                <p class='text-lg'>
+                    {{movie.movie_name}}
+                </p>
+            </div>
+        <a>
+        {% endfor %}
+    </div>
+{% endblock content %}

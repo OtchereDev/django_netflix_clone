@@ -4,9 +4,35 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import profileForm
-from .models import Movie, Profile
+from .models import Movie, Profile, WatchaMovie, WatchaUser, WatchaRating
+import pandas as pd
 
 # Create your views here.
+
+class Watcha(View):
+    def get(self,request,*args, **kwargs): 
+        watchauser=WatchaUser.objects.get(user_index=416)
+        watcharating=WatchaRating.objects.filter(user_index=416)
+
+        movie_name_list = []
+        movie_url_list = []
+        movie_list = []
+        for item in watcharating:
+            selected_movie = WatchaMovie.objects.get(movie_index=item.movie_index)
+            movie_name_list.append(selected_movie.movie_name)
+            movie_url_list.append(selected_movie.movie_url)
+            movie_list.append(selected_movie)
+
+        selected_movie_df = pd.DataFrame({'movie_names':movie_name_list,'movie_urls':movie_url_list})
+
+        watcharating=watcharating.values()
+        context = {'watchauser':watchauser, 'watcharating':watcharating, 'movie_name_list':movie_name_list, 'selected_movie_df':selected_movie_df.loc[:3].to_html(justify='center'), 
+        'movie_list':movie_list}
+
+        return render(request,'watchamovie.html',context)
+
+
+
 class Home(View):
     def get(self,request,*args,**kwargs):
         if request.user.is_authenticated:
@@ -22,6 +48,7 @@ class ProfileList(View):
         return render(request,'profileList.html',{
             'profiles':profiles
         })
+
 
 
 @method_decorator(login_required,name='dispatch')
@@ -55,13 +82,13 @@ class Watch(View):
         try:
             profile=Profile.objects.get(uuid=profile_id)
             movies=Movie.objects.filter(age_limit=profile.age_limit)
+            watchamovie=WatchaMovie.objects.all()    
+            context = {'movies':movies, 'watchamovie': watchamovie}
 
             if profile not in request.user.profiles.all():
                 return redirect(to='core:profile_list')
             
-            return render(request,'movieList.html',{
-                'movies':movies
-            })
+            return render(request,'movieList.html',context)
         except Profile.DoesNotExist:
             return redirect(to='core:profile_list')
 
@@ -92,3 +119,6 @@ class ShowMovie(View):
 
         except Movie.DoesNotExist:
             return redirect('core:profile_list')
+
+
+#=====================================================================

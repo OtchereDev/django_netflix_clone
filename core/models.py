@@ -2,6 +2,7 @@ from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
+from sqlalchemy import true
 
 # choices field (DB에 저장할 실제 값, display용 이름)
 AGE_CHOICES=(
@@ -39,3 +40,26 @@ class Movie(models.Model):
 class Video(models.Model):
     title=models.CharField(max_length=225,blank=True,null=True)
     file=models.FileField(upload_to='movies')
+
+#============================================================
+"""             왓챠피디아 DB         """
+class WatchaMovie(models.Model):
+    movie_index=models.IntegerField()
+    movie_id=models.CharField(max_length=225)
+    movie_name=models.CharField(max_length=225)
+    movie_url=models.CharField(max_length=225)
+
+
+class WatchaUser(models.Model):
+    user_index=models.IntegerField()
+    user_id=models.CharField(max_length=225)
+    user_name=models.CharField(max_length=64)
+    user_url=models.CharField(max_length=225)
+
+
+class WatchaRating(models.Model):
+    user_index=models.IntegerField()
+    movie_index=models.IntegerField()
+    rating=models.FloatField()
+
+
