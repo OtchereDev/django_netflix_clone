@@ -55,6 +55,7 @@ class WatchaUser(models.Model):
     user_id=models.CharField(max_length=225)
     user_name=models.CharField(max_length=64)
     user_url=models.CharField(max_length=225)
+    user_email=models.CharField(max_length=225)
 
 
 class WatchaRating(models.Model):

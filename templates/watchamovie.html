@@ -6,22 +6,38 @@
 {% block content %}
     {% include 'partials/navbar.html' %}
 
-{% comment %} 
+    {% comment %} 
     <div style="padding-top:40px">
         {{ selected_movie_df|safe }}
     </div> {% endcomment %}
-    <div style="padding-top:40px">
+
+<div class="pt-60 px-8">
+    <div class="py-8">
+        <span class="font-bold text-xl text-left">내가 평가한 영화</span>
+        <div class="flex flex-wrap justify-center items-center">
+            {% for movie in movie_list %}
+            <a href='{{movie.movie_url}}'>
+                <div class="w-32 h-32 m-4 flex flex-col justify-center align-center text-center bg-blue-500 rounded-md">
+                    <p class='text-lg'>
+                        {{movie.movie_name}}
+                    </p>
+                </div>
+            <a>
+            {% endfor %}
+        </div>
     </div>
 
-    <div class="flex flex-wrap justify-center items-center">
-        {% for movie in movie_list %}
-        <a href='{{movie.movie_url}}'>
-            <div class="w-32 h-32 m-4 flex flex-col justify-center align-center text-center bg-blue-500 rounded-md">
-                <p class='text-lg'>
-                    {{movie.movie_name}}
-                </p>
-            </div>
-        <a>
-        {% endfor %}
+    <div class="py-8">
+        <span class="font-bold text-xl text-left">추천 영화(KNN)</span>
+        <div class="flex flex-wrap justify-center items-center">
+            {% for rec in recomm_list %}
+                <div class="w-32 h-32 m-4 flex flex-col justify-center align-center text-center bg-indigo-500 rounded-md">
+                    <p class='text-lg'>
+                        {{ rec }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock content %}

@@ -5,31 +5,54 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import profileForm
 from .models import Movie, Profile, WatchaMovie, WatchaUser, WatchaRating
+
+from .MH_Surprise import Surprise_KNNBaseline
 import pandas as pd
 
 # Create your views here.
 
+# class Surprise(View):
+#     def get(self,request):
+#         ratings = pd.read_csv('./data/watcha_ratings.csv', encoding = 'utf-8')
+#         movies = pd.read_csv('./data/watcha_movies.csv', encoding = 'utf-8')
+#         users = pd.read_csv('./data/watcha_users.csv', encoding = 'utf-8')
+        
+#         recomm_1765 = Surprise_KNNBaseline(ratings, movies, users,1765, n = 30)
+    
+#         recomm_list = []
+#         for item in recomm_1765.values:
+#             recomm_list.append(list(item))
+
+#         context = {'ratings':ratings.to_html,'recomm_1765':recomm_1765.to_html,'recomm_list':recomm_list}
+#         return render(request,'watchamovie.html',context)
+
+@method_decorator(login_required,name='dispatch')
 class Watcha(View):
     def get(self,request,*args, **kwargs): 
-        watchauser=WatchaUser.objects.get(user_index=416)
-        watcharating=WatchaRating.objects.filter(user_index=416)
+        email = request.user.email
+        watchauser=WatchaUser.objects.get(user_email=email)
+        watcharating=WatchaRating.objects.filter(user_index=watchauser.user_index)
 
-        movie_name_list = []
-        movie_url_list = []
         movie_list = []
         for item in watcharating:
             selected_movie = WatchaMovie.objects.get(movie_index=item.movie_index)
-            movie_name_list.append(selected_movie.movie_name)
-            movie_url_list.append(selected_movie.movie_url)
             movie_list.append(selected_movie)
 
-        selected_movie_df = pd.DataFrame({'movie_names':movie_name_list,'movie_urls':movie_url_list})
+        ratings = pd.read_csv('./data/watcha_ratings.csv', encoding = 'utf-8')
+        movies = pd.read_csv('./data/watcha_movies.csv', encoding = 'utf-8')
+        users = pd.read_csv('./data/watcha_users.csv', encoding = 'utf-8')
+        recomm_1765 = Surprise_KNNBaseline(ratings, movies, users,0, n = 30)
+    
+        recomm_list = []
+        for item in recomm_1765.values:
+            recomm_list.append(list(item)[0])
 
-        watcharating=watcharating.values()
-        context = {'watchauser':watchauser, 'watcharating':watcharating, 'movie_name_list':movie_name_list, 'selected_movie_df':selected_movie_df.loc[:3].to_html(justify='center'), 
-        'movie_list':movie_list}
+        context = {'watchauser':watchauser, 'watcharating':watcharating, 'movie_list':movie_list[:10], 'email':email,'ratings':ratings.to_html,
+        'recomm_list':recomm_list[:10]}
 
         return render(request,'watchamovie.html',context)
+
+
 
 
 
