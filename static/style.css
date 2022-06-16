@@ -558,6 +558,11 @@ video {
   background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
 }
 
+.bg-teal-300{
+  --tw-bg-opacity: 1;
+  background-color: rgba(94 234 212, var(--tw-bg-opacity));
+}
+
 .bg-primary_red{
   --tw-bg-opacity: 1;
   background-color: rgba(229, 9, 20, var(--tw-bg-opacity));
