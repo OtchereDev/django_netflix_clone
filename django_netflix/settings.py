@@ -137,6 +137,7 @@ STATICFILES_DIRS=[
 
 # Auth stting
 AUTH_USER_MODEL='core.CustomUser'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField' # new
 
 AUTHENTICATION_BACKENDS = [
 
