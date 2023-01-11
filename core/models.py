@@ -27,7 +27,7 @@ class Profile(models.Model):
 
 class Movie(models.Model):
     title:str=models.CharField(max_length=225)
-    description:str=models.TextField()
+    description:str=models.TextField(blank=True)
     created =models.DateTimeField(auto_now_add=True)
     uuid=models.UUIDField(default=uuid.uuid4,unique=True)
     type=models.CharField(max_length=10,choices=MOVIE_TYPE)
