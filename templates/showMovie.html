@@ -23,6 +23,6 @@ Netflix - Movie
         
         const video_param = parseInt(url.searchParams.get("epi")) ? parseInt(url.searchParams.get("epi")) : 0
 
-        videoEl.setAttribute('src',`http:/localhost:8000/media/${movie_data[video_param].file}`)
+        videoEl.setAttribute('src',`http://localhost:8000/media/${movie_data[video_param].file}`)
     </script>
 {% endblock content %}
